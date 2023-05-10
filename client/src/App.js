@@ -5,7 +5,7 @@ function App() {
   const [form, setForm] = useState({
     amount: 0,
     description: '',
-    date: '', 
+    date: '',
   });
 
   async function handleSubmit(e) {
@@ -13,7 +13,8 @@ function App() {
     // console.log(form);
     const res = await fetch('http://localhost:4000/transaction', {
       method: 'POST',
-      body: form,
+      body: JSON.stringify(form),
+      headers: { 'content-type': 'application/json' },
     });
     const data = await res.json();
     console.log(data);

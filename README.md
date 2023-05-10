@@ -6,6 +6,7 @@ npm i express
 npm i mongoose 
 npm i nodemon 
 npm i cors
+npm i body-parser
 
 
 

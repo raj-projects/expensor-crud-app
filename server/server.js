@@ -1,11 +1,13 @@
 import express from 'express';
 import mongoose from 'mongoose';
 import cors from 'cors';
+import bodyParser from 'body-parser';
 
 const PORT = 4000;
 const app = express();
 
 app.use(cors());
+app.use(bodyParser.json());
 
 // MongoDb connection
 await mongoose.connect(
@@ -18,6 +20,7 @@ app.get('/', (req, res) => {
 });
 
 app.post('/transaction', (req, res) => {
+  const { amount, description, date } = req.body;
   res.json({ message: 'Hello world' });
 });
 
