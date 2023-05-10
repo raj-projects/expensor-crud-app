@@ -8,9 +8,15 @@ function App() {
     date: '', 
   });
 
-  function handleSubmit(e) {
+  async function handleSubmit(e) {
     e.preventDefault();
-    console.log(form);
+    // console.log(form);
+    const res = await fetch('http://localhost:4000/transaction', {
+      method: 'POST',
+      body: form,
+    });
+    const data = await res.json();
+    console.log(data);
   }
 
   function handleInput(e) {
