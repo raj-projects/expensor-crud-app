@@ -20,8 +20,9 @@ function App() {
       body: JSON.stringify(form),
       headers: { 'content-type': 'application/json' },
     });
-    const data = await res.json();
-    console.log(data);
+    if (res.ok) {
+      fetchTransaction();
+    }
   }
 
   async function fetchTransaction() {
@@ -71,7 +72,7 @@ function App() {
             <td>Transaction Date</td>
           </tr>
           {transactions.map((trx) => (
-            <tr>
+            <tr key={trx._id}>
               <td>{trx.amount}</td>
               <td>{trx.description}</td>
               <td>{trx.date}</td>
