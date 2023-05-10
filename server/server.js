@@ -21,7 +21,7 @@ app.get('/', (req, res) => {
 });
 
 app.get('/transaction', async (req, res) => {
-  const transaction = await Transaction.find({});
+  const transaction = await Transaction.find({}).sort({ createdAt: -1 });
   res.json({ data: transaction });
 });
 
