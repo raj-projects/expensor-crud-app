@@ -3,12 +3,12 @@ import Transaction from '../models/Transaction.js';
 
 const router = Router();
 
-router.get('/transaction', async (req, res) => {
+router.get('/', async (req, res) => {
   const transaction = await Transaction.find({}).sort({ createdAt: -1 });
   res.json({ data: transaction });
 });
 
-router.post('/transaction', async (req, res) => {
+router.post('/', async (req, res) => {
   const { amount, description, date } = req.body;
   const transaction = new Transaction({
     amount,
