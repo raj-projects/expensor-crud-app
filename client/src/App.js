@@ -7,6 +7,7 @@ import { Container } from '@mui/material';
 
 function App() {
   const [transactions, setTransactions] = useState([]);
+  const [editTransactions, setEditTransactions] = useState([]);
 
   async function fetchTransaction() {
     const res = await fetch('http://localhost:4000/transaction');
@@ -22,10 +23,11 @@ function App() {
     <>
       <Navbar />
       <Container>
-        <TransactionForm fetchTransaction={fetchTransaction} />
+        <TransactionForm fetchTransaction={fetchTransaction} editTransactions={editTransactions} />
         <TransactionsList
           transactions={transactions}
           fetchTransaction={fetchTransaction}
+          setEditTransactions={setEditTransactions}
         />
       </Container>
     </>

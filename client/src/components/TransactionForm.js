@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
@@ -14,7 +14,10 @@ const InitialForm = {
   date: new Date(),
 };
 
-export default function TransactionForm({ fetchTransaction }) {
+export default function TransactionForm({
+  fetchTransaction,
+  editTransactions,
+}) {
   const [form, setForm] = useState(InitialForm);
 
   const handleChange = (e) => {
@@ -27,16 +30,42 @@ export default function TransactionForm({ fetchTransaction }) {
 
   async function handleSubmit(e) {
     e.preventDefault();
-    const res = await fetch('http://localhost:4000/transaction', {
-      method: 'POST',
-      body: JSON.stringify(form),
-      headers: { 'content-type': 'application/json' },
-    });
+    const res = editTransactions.amount === undefined ? create() : update();
+  }
+
+  function reload(res) {
     if (res.ok) {
       setForm(InitialForm);
       fetchTransaction();
     }
   }
+
+  async function create() {
+    const res = await fetch('http://localhost:4000/transaction', {
+      method: 'POST',
+      body: JSON.stringify(form),
+      headers: { 'content-type': 'application/json' },
+    });
+    reload(res);
+  }
+
+  async function update() {
+    const res = await fetch(
+      `http://localhost:4000/transaction/${editTransactions._id}`,
+      {
+        method: 'PATCH',
+        body: JSON.stringify(form),
+        headers: { 'content-type': 'application/json' },
+      }
+    );
+    reload(res);
+  }
+
+  useEffect(() => {
+    if (editTransactions.amount !== undefined) {
+      setForm(editTransactions);
+    }
+  }, [editTransactions]);
 
   return (
     <Card sx={{ minWidth: 275, mt: 10 }}>
@@ -46,7 +75,7 @@ export default function TransactionForm({ fetchTransaction }) {
           <TextField
             id="outlined-basic"
             sx={{ mr: 5 }}
-            // size="small"
+            size="small"
             label="Amount"
             name="amount"
             variant="outlined"
@@ -56,7 +85,7 @@ export default function TransactionForm({ fetchTransaction }) {
           <TextField
             id="outlined-basic"
             sx={{ mr: 5 }}
-            // size="small"
+            size="small"
             label="Description"
             name="description"
             variant="outlined"
@@ -66,7 +95,6 @@ export default function TransactionForm({ fetchTransaction }) {
           <LocalizationProvider dateAdapter={AdapterDayjs}>
             <DesktopDatePicker
               sx={{ mr: 5 }}
-              label="Transaction Date"
               inputFormat="MM/DD/YYYY"
               onChange={handleDate}
               renderInput={(params) => (
@@ -74,9 +102,16 @@ export default function TransactionForm({ fetchTransaction }) {
               )}
             />
           </LocalizationProvider>
-          <Button type="submit" size="large" variant="contained">
-            Submit
-          </Button>
+          {editTransactions.amount !== undefined && (
+            <Button type="submit" variant="contained">
+              Update
+            </Button>
+          )}
+          {editTransactions.amount === undefined && (
+            <Button type="submit" variant="contained">
+              Submit
+            </Button>
+          )}
         </form>
       </CardContent>
     </Card>

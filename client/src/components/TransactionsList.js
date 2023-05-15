@@ -13,7 +13,11 @@ import EditIcon from '@mui/icons-material/Edit';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import dayjs from 'dayjs';
 
-export default function TransactionsList({ transactions, fetchTransaction }) {
+export default function TransactionsList({
+  transactions,
+  fetchTransaction,
+  setEditTransactions,
+}) {
   async function remove(_id) {
     if (!window.confirm('Are you sure?')) return;
     const res = await fetch(`http://localhost:4000/transaction/${_id}`, {
@@ -58,6 +62,7 @@ export default function TransactionsList({ transactions, fetchTransaction }) {
                     color="primary"
                     aria-label="Edit"
                     component="label"
+                    onClick={() => setEditTransactions(trx)}
                   >
                     <EditIcon />
                   </IconButton>
