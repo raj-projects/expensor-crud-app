@@ -11,17 +11,22 @@ import { Box } from '@mui/system';
 import IconButton from '@mui/material/IconButton';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
+import dayjs from 'dayjs';
 
 export default function TransactionsList({ transactions, fetchTransaction }) {
   async function remove(_id) {
     if (!window.confirm('Are you sure?')) return;
     const res = await fetch(`http://localhost:4000/transaction/${_id}`, {
-      method: "DELETE",
+      method: 'DELETE',
     });
     if (res.ok) {
       fetchTransaction();
       window.alert('Delete successfully');
     }
+  }
+
+  function formatDate(date) {
+    return dayjs(date).format('DD MMM, YYYY');
   }
 
   return (
@@ -47,7 +52,7 @@ export default function TransactionsList({ transactions, fetchTransaction }) {
                 <TableCell>{i + 1}</TableCell>
                 <TableCell align="center">{trx.amount}</TableCell>
                 <TableCell align="center">{trx.description}</TableCell>
-                <TableCell align="center">{trx.date}</TableCell>
+                <TableCell align="center">{formatDate(trx.date)}</TableCell>
                 <TableCell align="center">
                   <IconButton
                     color="primary"
