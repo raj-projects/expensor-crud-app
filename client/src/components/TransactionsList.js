@@ -12,11 +12,18 @@ import IconButton from '@mui/material/IconButton';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 
-export default function TransactionsList({ transactions }) {
-  function remove(_id) {
-    console.log(_id);
+export default function TransactionsList({ transactions, fetchTransaction }) {
+  async function remove(_id) {
+    if (!window.confirm('Are you sure?')) return;
+    const res = await fetch(`http://localhost:4000/transaction/${_id}`, {
+      method: "DELETE",
+    });
+    if (res.ok) {
+      fetchTransaction();
+      window.alert('Delete successfully');
+    }
   }
-  
+
   return (
     <Box sx={{ marginTop: 5 }}>
       <Typography variant="h6">Transaction Lists</Typography>

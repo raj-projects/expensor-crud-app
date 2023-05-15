@@ -23,7 +23,10 @@ function App() {
       <Navbar />
       <Container>
         <TransactionForm fetchTransaction={fetchTransaction} />
-        <TransactionsList transactions={transactions} />
+        <TransactionsList
+          transactions={transactions}
+          fetchTransaction={fetchTransaction}
+        />
       </Container>
     </>
   );
